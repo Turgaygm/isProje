@@ -1,0 +1,24 @@
+CREATE PROCEDURE pros7 (@Malkodu VARCHAR(30), @BaslangicTarihi INT, @BitisTarihi INT)
+AS
+BEGIN
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY STI.Tarih ASC) AS SiraNo, 
+        CASE STI.IslemTur WHEN 0 THEN 'Giriþ' WHEN 1 THEN 'Çýkýþ' 
+            ELSE 'Bilinmiyor' 
+        END AS IslemTur, 
+        STI.EvrakNo, 
+        CONVERT(VARCHAR(15), CAST(STI.Tarih - 2 AS datetime), 104) AS Tarih, 
+        CASE STI.IslemTur 
+            WHEN 0 THEN STI.Miktar 
+            ELSE 0 
+        END AS GirisMiktar, 
+        CASE STI.IslemTur 
+            WHEN 1 THEN STI.Miktar 
+            ELSE 0 
+        END AS CikisMiktar, 
+
+      SUM(CASE STI.IslemTur WHEN 0 THEN STI.Miktar ELSE -STI.Miktar END) OVER (ORDER BY STI.Tarih) AS Stok
+    FROM  STI
+    WHERE STI.Malkodu = @Malkodu AND STI.Tarih BETWEEN @BaslangicTarihi AND @BitisTarihi
+    ORDER BY STI.Tarih ASC
+END

@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TestdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="STI">
+          <Key>
+            <PropertyRef Name="IslemTur" />
+            <PropertyRef Name="EvrakNo" />
+            <PropertyRef Name="Tarih" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IslemTur" Type="smallint" Nullable="false" />
+          <Property Name="EvrakNo" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="Tarih" Type="int" Nullable="false" />
+          <Property Name="MalKodu" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Miktar" Type="numeric" Precision="25" Scale="6" Nullable="false" />
+          <Property Name="Fiyat" Type="numeric" Precision="25" Scale="6" Nullable="false" />
+          <Property Name="Tutar" Type="numeric" Precision="25" Scale="6" Nullable="false" />
+          <Property Name="Birim" Type="varchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STK">
+          <Key>
+            <PropertyRef Name="MalKodu" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MalKodu" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="MalAdi" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Function Name="pros7" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Malkodu" Type="varchar" Mode="In" />
+          <Parameter Name="BaslangicTarihi" Type="int" Mode="In" />
+          <Parameter Name="BitisTarihi" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="TestdbModelStoreContainer">
+          <EntitySet Name="STI" EntityType="Self.STI" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="STK" EntityType="Self.STK" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TestdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="STI">
+          <Key>
+            <PropertyRef Name="IslemTur" />
+            <PropertyRef Name="EvrakNo" />
+            <PropertyRef Name="Tarih" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IslemTur" Type="Int16" Nullable="false" />
+          <Property Name="EvrakNo" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tarih" Type="Int32" Nullable="false" />
+          <Property Name="MalKodu" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Miktar" Type="Decimal" Precision="25" Scale="6" Nullable="false" />
+          <Property Name="Fiyat" Type="Decimal" Precision="25" Scale="6" Nullable="false" />
+          <Property Name="Tutar" Type="Decimal" Precision="25" Scale="6" Nullable="false" />
+          <Property Name="Birim" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STK">
+          <Key>
+            <PropertyRef Name="MalKodu" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MalKodu" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MalAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="TestdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="STI" EntityType="Self.STI" />
+          <EntitySet Name="STK" EntityType="Self.STK" />
+          <FunctionImport Name="pros7" ReturnType="Collection(TestdbModel.pros7_Result)">
+            <Parameter Name="Malkodu" Mode="In" Type="String" />
+            <Parameter Name="BaslangicTarihi" Mode="In" Type="Int32" />
+            <Parameter Name="BitisTarihi" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="pros7_Result">
+          <Property Type="Int64" Name="SiraNo" Nullable="true" />
+          <Property Type="String" Name="IslemTur" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="EvrakNo" Nullable="false" MaxLength="16" />
+          <Property Type="String" Name="Tarih" Nullable="true" MaxLength="15" />
+          <Property Type="Decimal" Name="GirisMiktar" Nullable="false" Precision="25" Scale="6" />
+          <Property Type="Decimal" Name="CikisMiktar" Nullable="false" Precision="25" Scale="6" />
+          <Property Type="Decimal" Name="Stok" Nullable="true" Precision="38" Scale="6" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TestdbModelStoreContainer" CdmEntityContainer="TestdbEntities">
+          <EntitySetMapping Name="STI">
+            <EntityTypeMapping TypeName="TestdbModel.STI">
+              <MappingFragment StoreEntitySet="STI">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IslemTur" ColumnName="IslemTur" />
+                <ScalarProperty Name="EvrakNo" ColumnName="EvrakNo" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="MalKodu" ColumnName="MalKodu" />
+                <ScalarProperty Name="Miktar" ColumnName="Miktar" />
+                <ScalarProperty Name="Fiyat" ColumnName="Fiyat" />
+                <ScalarProperty Name="Tutar" ColumnName="Tutar" />
+                <ScalarProperty Name="Birim" ColumnName="Birim" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STK">
+            <EntityTypeMapping TypeName="TestdbModel.STK">
+              <MappingFragment StoreEntitySet="STK">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MalKodu" ColumnName="MalKodu" />
+                <ScalarProperty Name="MalAdi" ColumnName="MalAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="pros7" FunctionName="TestdbModel.Store.pros7">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TestdbModel.pros7_Result">
+                <ScalarProperty Name="SiraNo" ColumnName="SiraNo" />
+                <ScalarProperty Name="IslemTur" ColumnName="IslemTur" />
+                <ScalarProperty Name="EvrakNo" ColumnName="EvrakNo" />
+                <ScalarProperty Name="Tarih" ColumnName="Tarih" />
+                <ScalarProperty Name="GirisMiktar" ColumnName="GirisMiktar" />
+                <ScalarProperty Name="CikisMiktar" ColumnName="CikisMiktar" />
+                <ScalarProperty Name="Stok" ColumnName="Stok" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
